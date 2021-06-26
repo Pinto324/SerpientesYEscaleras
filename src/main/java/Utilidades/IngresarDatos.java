@@ -13,11 +13,6 @@ public class IngresarDatos {
         int number =  C.nextInt();
         return number;
     }
-    public void Enter(String mensajeDesplegar){
-        System.out.println("\nPresione enter para "+mensajeDesplegar);
-        String number =  C.nextLine();
-        C.reset();
-    }
     public String IngresarString(String mensajeDesplegar){
         System.out.println(mensajeDesplegar + " ");
         String dato = C.next();
