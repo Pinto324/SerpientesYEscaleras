@@ -11,17 +11,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ManejoDeUsuarios {
-    static ArrayList<Usuarios> Usuarios = new ArrayList<>();
+    private static ArrayList<Usuarios> ListaUsuarios = new ArrayList<>();
 
     public ManejoDeUsuarios() {
     }
 
-    public ArrayList<Usuarios> getUsuarios() {
-        return Usuarios;
+    public static ArrayList<Usuarios> getListaUsuarios() {
+        return ListaUsuarios;
     }
 
-    public void setUsuarios(ArrayList<Usuarios> Usuarios) {
-        ManejoDeUsuarios.Usuarios = Usuarios;
+    public static void setListaUsuarios(ArrayList<Usuarios> Usuarios) {
+        ManejoDeUsuarios.ListaUsuarios = Usuarios;
     }
     
     
@@ -52,7 +52,7 @@ public class ManejoDeUsuarios {
             PartidasGanadas= br.readInt();
             PartidasPerdidas= br.readInt();
             Usuarios O = new Usuarios(Id,Nombre, Apellido, PartidasJugadas,PartidasGanadas,PartidasPerdidas);
-            Usuarios.add(O); 
+            ListaUsuarios.add(O); 
             }catch(EOFException ex){
             masregistros=false;          
                     }
@@ -74,13 +74,13 @@ public class ManejoDeUsuarios {
         try {
             Fs = new FileOutputStream("Datos/Usuarios.dat");
             pw = new DataOutputStream(Fs);
-            for (int i = 0; i < Usuarios.size(); i++) {
-                pw.writeInt(Usuarios.get(i).getId());
-                pw.writeUTF(Usuarios.get(i).getNombre());
-                pw.writeUTF(Usuarios.get(i).getApellido());
-                pw.writeInt(Usuarios.get(i).getPartidasJugadas());
-                pw.writeInt(Usuarios.get(i).getPartidasGanadas());
-                pw.writeInt(Usuarios.get(i).getPartidasPerdidas());
+            for (int i = 0; i < ListaUsuarios.size(); i++) {
+                pw.writeInt(ListaUsuarios.get(i).getId());
+                pw.writeUTF(ListaUsuarios.get(i).getNombre());
+                pw.writeUTF(ListaUsuarios.get(i).getApellido());
+                pw.writeInt(ListaUsuarios.get(i).getPartidasJugadas());
+                pw.writeInt(ListaUsuarios.get(i).getPartidasGanadas());
+                pw.writeInt(ListaUsuarios.get(i).getPartidasPerdidas());
             }
         } catch (IOException e1) {
         } finally {

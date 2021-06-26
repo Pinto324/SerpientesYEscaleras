@@ -2,7 +2,7 @@
 package InterfazGrafica;
 
 public class MenuPrincipal extends javax.swing.JFrame {
-
+    static IngresoDeUsuario Ingreso = new IngresoDeUsuario();
     public MenuPrincipal() {
         initComponents();
     }
@@ -107,7 +107,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotonIngresoDeUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIngresoDeUsuariosActionPerformed
-        
+        main.main.Menu.setVisible(false);
+        Ingreso.setVisible(true);
+        Ingreso.setLocationRelativeTo(null);
+        Ingreso.setTitle("Ingreso de usuarios");
     }//GEN-LAST:event_BotonIngresoDeUsuariosActionPerformed
 
 

@@ -1,6 +1,8 @@
 
 package Usuarios;
 
+import static Usuarios.ManejoDeUsuarios.getListaUsuarios;
+
 public class Usuarios {
     private int Id;
     private String Nombre;
@@ -65,6 +67,13 @@ public class Usuarios {
     public void setPartidasPerdidas(int PartidasPerdidas) {
         this.PartidasPerdidas = PartidasPerdidas;
     }
-    
-
+    //Verificación si el id está en uso
+    public boolean IdEnUso(int Id){
+        for (int x = 0; x < getListaUsuarios().size(); x++) {          
+            if(Id==ManejoDeUsuarios.getListaUsuarios().get(x).Id){
+                return false;
+            }
+        }
+        return true;
+    }
 }
