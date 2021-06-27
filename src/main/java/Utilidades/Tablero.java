@@ -6,11 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Tablero {
-    private JPanel Casilla;
-    private JLabel ImagenDeCasilla ;
+    
     private boolean EsEscalera;
     private boolean EsSerpiente;
-    private int NoCasilla;
+    
     ArrayList<Ficha> FichasEnLaCasilla;
 
     public Tablero(JPanel Casilla, JLabel ImagenDeCasilla, boolean EsEscalera, boolean EsSerpiente, int NoCasilla, ArrayList<Ficha> FichasEnLaCasilla) {
