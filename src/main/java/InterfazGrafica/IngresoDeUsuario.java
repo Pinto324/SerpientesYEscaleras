@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 public class IngresoDeUsuario extends javax.swing.JFrame {
 
-    private Usuarios Comprobacion = new Usuarios(0,"","",0,0,0);
+    private final Usuarios Comprobacion = new Usuarios(0,"","",0,0,0);
     public IngresoDeUsuario() {
         initComponents();
     }
@@ -102,9 +102,9 @@ public class IngresoDeUsuario extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(TextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(TextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BotonSubidaDatos)
