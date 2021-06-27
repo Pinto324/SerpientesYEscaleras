@@ -11,9 +11,7 @@ public class IngresoDeUsuario extends javax.swing.JFrame {
     private final Usuarios Comprobacion = new Usuarios(0,"","",0,0,0);
     public IngresoDeUsuario() {
         initComponents();
-    }
-
-    
+    }    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
