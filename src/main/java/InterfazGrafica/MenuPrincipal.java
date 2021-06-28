@@ -38,6 +38,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         BotonJugarPartida.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         BotonJugarPartida.setText("Jugar partida");
+        BotonJugarPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonJugarPartidaActionPerformed(evt);
+            }
+        });
 
         BotonMostrarDatos.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         BotonMostrarDatos.setText("Datos de usuarios");
@@ -124,6 +129,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         Datos.setLocationRelativeTo(null);
         Datos.setTitle("Datos de Usuarios");
     }//GEN-LAST:event_BotonMostrarDatosActionPerformed
+
+    private void BotonJugarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonJugarPartidaActionPerformed
+        Tablero NuevoTablero = new Tablero();
+        this.setVisible(false);
+        NuevoTablero.setVisible(true);
+        NuevoTablero.setLocationRelativeTo(null);   
+    }//GEN-LAST:event_BotonJugarPartidaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -5,6 +5,13 @@
  */
 package InterfazGrafica;
 
+import Utilidades.Casillas;
+import Utilidades.Ficha;
+import Utilidades.Partida;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import javax.swing.JLabel;
+
 /**
  *
  * @author branp
@@ -14,8 +21,15 @@ public class Tablero extends javax.swing.JFrame {
     /**
      * Creates new form MenuPrincipal
      */
+    ArrayList<Ficha> Fichas = new ArrayList<>();
+    JLabel L = new javax.swing.JLabel();
+    Ficha J1 = new Ficha(1,L,"Martin",1);
+    Partida Partida = new Partida(Fichas,8,8);
     public Tablero() {
         initComponents();
+        Fichas.add(J1);
+        this.PanelDeTablero.setLayout(new GridLayout(8,8));
+        MostrarSuelo();
     }
 
     /**
@@ -43,11 +57,11 @@ public class Tablero extends javax.swing.JFrame {
         PanelDeTablero.setLayout(PanelDeTableroLayout);
         PanelDeTableroLayout.setHorizontalGroup(
             PanelDeTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 625, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
         );
         PanelDeTableroLayout.setVerticalGroup(
             PanelDeTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
         );
 
         BotonDeDado.setText("Dado");
@@ -57,7 +71,7 @@ public class Tablero extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(74, Short.MAX_VALUE)
+                .addContainerGap(94, Short.MAX_VALUE)
                 .addComponent(BotonDeDado, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(62, 62, 62))
         );
@@ -76,8 +90,8 @@ public class Tablero extends javax.swing.JFrame {
             .addGroup(PanelDeMenuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(PanelDeTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         PanelDeMenuLayout.setVerticalGroup(
@@ -85,11 +99,9 @@ public class Tablero extends javax.swing.JFrame {
             .addGroup(PanelDeMenuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelDeMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PanelDeTablero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(PanelDeMenuLayout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 221, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PanelDeTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -113,4 +125,12 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JPanel PanelDeTablero;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+    public void MostrarSuelo(){
+        for (int x = 0; x < 8 ; x++) {
+                for (int y = 0; y < 8 ; y++) {
+                    Casillas A = Partida.getTablero()[x][y];
+                    this.PanelDeTablero.add(A.getImagenDeCasilla());
+                }
+        }
+    }
 }

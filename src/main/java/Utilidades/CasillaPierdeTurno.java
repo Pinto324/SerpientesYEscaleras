@@ -1,14 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Utilidades;
 
-/**
- *
- * @author branp
- */
-public class CasillaPierdeTurno {
+import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class CasillaPierdeTurno extends Casillas{
+
+    public CasillaPierdeTurno(int NoCasilla, JPanel Casilla, JLabel ImagenDeCasilla, ArrayList<Ficha> FichasEnLaCasilla) {
+        super(NoCasilla, Casilla, ImagenDeCasilla, FichasEnLaCasilla);
+    }
     
+    
+    @Override
+    public int RetronarCasilla() {
+        return -1;
+    }
 }

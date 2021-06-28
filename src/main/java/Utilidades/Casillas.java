@@ -2,19 +2,24 @@
 package Utilidades;
 
 import Movimientos.Movimiento;
+import java.util.ArrayList;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Casillas implements Movimiento{
     private int NoCasilla;
     private JPanel Casilla;
     private JLabel ImagenDeCasilla;
+    private ArrayList<Ficha> FichasEnLaCasilla;
 
-    public Casillas(int NoCasilla, JPanel Casilla, JLabel ImagenDeCasilla) {
+    public Casillas(int NoCasilla, JPanel Casilla, JLabel ImagenDeCasilla, ArrayList<Ficha> FichasEnLaCasilla) {
         this.NoCasilla = NoCasilla;
         this.Casilla = Casilla;
         this.ImagenDeCasilla = ImagenDeCasilla;
+        this.FichasEnLaCasilla = FichasEnLaCasilla;
     }
+    
 
     public int getNoCasilla() {
         return NoCasilla;
@@ -40,6 +45,14 @@ public class Casillas implements Movimiento{
         this.ImagenDeCasilla = ImagenDeCasilla;
     }
 
+    public ArrayList<Ficha> getFichasEnLaCasilla() {
+        return FichasEnLaCasilla;
+    }
+
+    public void setFichasEnLaCasilla(ArrayList<Ficha> FichasEnLaCasilla) {
+        this.FichasEnLaCasilla = FichasEnLaCasilla;
+    }
+
     @Override
     public void Avanzar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -49,5 +62,8 @@ public class Casillas implements Movimiento{
     public void Retroceder() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+    public int RetronarCasilla(){
+        JOptionPane.showMessageDialog(null, "soy casilla normal");
+        return NoCasilla;
+    }
 }
