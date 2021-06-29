@@ -135,6 +135,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         this.setVisible(false);
         NuevoTablero.setVisible(true);
         NuevoTablero.setLocationRelativeTo(null);   
+        
     }//GEN-LAST:event_BotonJugarPartidaActionPerformed
 
 

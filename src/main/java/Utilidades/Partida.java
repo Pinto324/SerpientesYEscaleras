@@ -3,7 +3,6 @@ package Utilidades;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -34,6 +33,22 @@ public class Partida {
 
     public void setFichasDeJugadores(ArrayList<Ficha> FichasDeJugadores) {
         this.FichasDeJugadores = FichasDeJugadores;
+    }
+
+    public int getFilas() {
+        return Filas;
+    }
+
+    public void setFilas(int Filas) {
+        this.Filas = Filas;
+    }
+
+    public int getColumnas() {
+        return Columnas;
+    }
+
+    public void setColumnas(int Columnas) {
+        this.Columnas = Columnas;
     }
     
     public void LlenarTablero(){
@@ -69,12 +84,40 @@ public class Partida {
                     //Asigna los jugadores a la primera casilla:
                     M.add(L);
                     if(ContadorCasillas == 1){
-                        Tablero[y][x] = new Casillas(ContadorCasillas,M,L,FichasDeJugadores);
+                        Tablero[x][y] = new Casillas(ContadorCasillas,M,L,FichasDeJugadores);
                     }else{
-                        Tablero[y][x] = new Casillas(ContadorCasillas,M,L,null);
+                        Tablero[x][y] = new Casillas(ContadorCasillas,M,L,null);
                     }             
                     ContadorCasillas++;    
                 }
             }
+    }
+    public void MeterFichaPorNo(Ficha F){
+        for (int x = 0; x < Columnas ; x++) {
+            for (int y = 0; y < Filas ; y++) {
+                if(Tablero[x][y].getNoCasilla()==F.getCasillaActual()){
+                    if(Tablero[x][y].getFichasEnLaCasilla()!=null){
+                        Tablero[x][y].getFichasEnLaCasilla().add(F);
+                    }else{
+                        ArrayList<Ficha> Fichas = new ArrayList<>();
+                        Fichas.add(F);
+                        Tablero[x][y].setFichasEnLaCasilla(Fichas);
+                    }
+                }
+            }
+        }
+    }
+    public void BorrarFichaPorNo(Ficha F){
+        for (int x = 0; x < Columnas ; x++) {
+            for (int y = 0; y < Filas ; y++) {
+                if(Tablero[x][y].getNoCasilla()==F.getCasillaActual()){
+                    for (int i = 0; i < FichasDeJugadores.size() ; i++) {
+                        if(FichasDeJugadores.get(i).equals(F)){
+                            Tablero[x][y].getFichasEnLaCasilla().remove(i);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
