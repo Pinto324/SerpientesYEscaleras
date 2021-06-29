@@ -5,12 +5,17 @@
  */
 package InterfazGrafica;
 
-import Utilidades.Casillas;
+import Partida.ManejadorDePartida;
 import Utilidades.Ficha;
 import Utilidades.Partida;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -23,12 +28,17 @@ public class Tablero extends javax.swing.JFrame {
      */
     ArrayList<Ficha> Fichas = new ArrayList<>();
     JLabel L = new javax.swing.JLabel();
-    Ficha J1 = new Ficha(1,L,"Martin",1);
-    Partida Partida = new Partida(Fichas,8,8);
+    ManejadorDePartida Admin = new ManejadorDePartida();
+    Ficha J1;
+    int Mov;
+    Partida Partida;
     public Tablero() {
         initComponents();
+        L.setIcon(new ImageIcon("Fichas/FichaA.png"));
+        J1 = new Ficha(1,L,"Martin",1);
         Fichas.add(J1);
-        this.PanelDeTablero.setLayout(new GridLayout(8,8));
+        Partida = new Partida(Fichas,10,10);
+        PanelDeTablero.setLayout(new GridLayout(10,10));
         MostrarSuelo();
     }
 
@@ -44,7 +54,10 @@ public class Tablero extends javax.swing.JFrame {
         PanelDeMenu = new javax.swing.JPanel();
         PanelDeTablero = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        BotonDeDado = new javax.swing.JButton();
+        BotonEmpezar = new javax.swing.JButton();
+        BotonParar = new javax.swing.JButton();
+        PanelDado = new javax.swing.JPanel();
+        ImagenDado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(51, 51, 255));
@@ -52,6 +65,8 @@ public class Tablero extends javax.swing.JFrame {
         PanelDeMenu.setBackground(new java.awt.Color(51, 51, 255));
 
         PanelDeTablero.setBackground(new java.awt.Color(153, 153, 255));
+        PanelDeTablero.setPreferredSize(new java.awt.Dimension(800, 630));
+        PanelDeTablero.setRequestFocusEnabled(false);
 
         javax.swing.GroupLayout PanelDeTableroLayout = new javax.swing.GroupLayout(PanelDeTablero);
         PanelDeTablero.setLayout(PanelDeTableroLayout);
@@ -61,26 +76,65 @@ public class Tablero extends javax.swing.JFrame {
         );
         PanelDeTableroLayout.setVerticalGroup(
             PanelDeTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addGap(0, 630, Short.MAX_VALUE)
         );
 
-        BotonDeDado.setText("Dado");
+        BotonEmpezar.setText("Empezar giro");
+        BotonEmpezar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonEmpezarActionPerformed(evt);
+            }
+        });
+
+        BotonParar.setText("Parar");
+        BotonParar.setEnabled(false);
+        BotonParar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonPararActionPerformed(evt);
+            }
+        });
+
+        PanelDado.setPreferredSize(new java.awt.Dimension(100, 100));
+
+        ImagenDado.setText(" ");
+        ImagenDado.setPreferredSize(new java.awt.Dimension(100, 100));
+
+        javax.swing.GroupLayout PanelDadoLayout = new javax.swing.GroupLayout(PanelDado);
+        PanelDado.setLayout(PanelDadoLayout);
+        PanelDadoLayout.setHorizontalGroup(
+            PanelDadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ImagenDado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        PanelDadoLayout.setVerticalGroup(
+            PanelDadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ImagenDado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(94, Short.MAX_VALUE)
-                .addComponent(BotonDeDado, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(BotonEmpezar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(BotonParar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(PanelDado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(175, Short.MAX_VALUE)
-                .addComponent(BotonDeDado)
-                .addGap(36, 36, 36))
+                .addGap(33, 33, 33)
+                .addComponent(PanelDado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BotonEmpezar)
+                    .addComponent(BotonParar))
+                .addGap(32, 32, 32))
         );
 
         javax.swing.GroupLayout PanelDeMenuLayout = new javax.swing.GroupLayout(PanelDeMenu);
@@ -90,7 +144,7 @@ public class Tablero extends javax.swing.JFrame {
             .addGroup(PanelDeMenuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(PanelDeTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -99,8 +153,8 @@ public class Tablero extends javax.swing.JFrame {
             .addGroup(PanelDeMenuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelDeMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PanelDeTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PanelDeTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -118,18 +172,60 @@ public class Tablero extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BotonEmpezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEmpezarActionPerformed
+        BotonEmpezar.setEnabled(false);
+        BotonParar.setEnabled(true);
+        Timer timer = new Timer();
+        TimerTask tarea = new TimerTask(){
+         @Override
+            public void run(){  
+            Mov = Admin.ManejarDado(ImagenDado); 
+                if(BotonEmpezar.isEnabled()){
+                    timer.cancel();
+                }
+            }
+        };
+     timer.schedule(tarea, 100, 100);    
+    }//GEN-LAST:event_BotonEmpezarActionPerformed
+
+    private void BotonPararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonPararActionPerformed
+        BotonEmpezar.setEnabled(true);
+        BotonParar.setEnabled(false);
+    }//GEN-LAST:event_BotonPararActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BotonDeDado;
+    private javax.swing.JButton BotonEmpezar;
+    private javax.swing.JButton BotonParar;
+    private javax.swing.JLabel ImagenDado;
+    private javax.swing.JPanel PanelDado;
     private javax.swing.JPanel PanelDeMenu;
     private javax.swing.JPanel PanelDeTablero;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
     public void MostrarSuelo(){
-        for (int x = 0; x < 8 ; x++) {
-                for (int y = 0; y < 8 ; y++) {
-                    Casillas A = Partida.getTablero()[x][y];
-                    this.PanelDeTablero.add(A.getImagenDeCasilla());
+        for (int x = 0; x < 10 ; x++) {
+                for (int y = 0; y < 10 ; y++) {
+                    try{
+                        //Ver Las fichas en la casilla:
+                        if(Partida.getTablero()[x][y].getFichasEnLaCasilla().size()<=2){
+                            Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,1));
+                        }else if(Partida.getTablero()[x][y].getFichasEnLaCasilla().size()<=4){
+                            Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,2));
+                        }else{
+                            Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,3));
+                        }
+                            if(Partida.getTablero()[x][y].getFichasEnLaCasilla()!=null){
+                                for (int i = 0; i < Partida.getTablero()[x][y].getFichasEnLaCasilla().size() ; i++) {
+                                    Partida.getTablero()[x][y].getCasilla().add(Partida.getTablero()[x][y].getFichasEnLaCasilla().get(i).getImagenFicha());
+                                }
+                            }else{
+                                Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(1,1));
+                            }
+                        }catch(java.lang.NullPointerException e){
+                    }
+                    JPanel A = this.Partida.getTablero()[x][y].getCasilla();    
+                    PanelDeTablero.add(A);
                 }
         }
     }

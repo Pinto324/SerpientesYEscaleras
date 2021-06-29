@@ -1,6 +1,7 @@
 
 package Utilidades;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -37,23 +38,41 @@ public class Partida {
     
     public void LlenarTablero(){
         int ContadorCasillas = 1;    
-        JPanel M = new javax.swing.JPanel();
-        JLabel L = new javax.swing.JLabel();
-            for (int x = 0; x < Columnas ; x++) {
-                for (int y = 0; y < Filas ; y++) {
-                    if(ContadorCasillas%2==0){
-                        ImageIcon CasillaAzul = new ImageIcon("Casillas/CasillaPar.jpg");
-                        L.setIcon(CasillaAzul);
+            for (int x = Columnas -1; x > -1 ; x--) {
+                for (int y = Filas -1; y > -1 ; y--) {
+                    JPanel M = new javax.swing.JPanel();
+                    JLabel L = new javax.swing.JLabel();  
+                    if(y%2==0){
+                        if(x%2==0){
+                            /*
+                            ImageIcon CasillaAzul = new ImageIcon("Casillas/CasillaPar.jpg");
+                            L.setIcon(CasillaAzul);*/
+                            M.setBackground(Color.cyan);
+                        }else{
+                            /*ImageIcon CasillaRosa = new ImageIcon("Casillas/CasillaImpar.jpg");
+                            L.setIcon(CasillaRosa);*/
+                            M.setBackground(Color.PINK);
+                        }
                     }else{
-                        ImageIcon CasillaRosa = new ImageIcon("Casillas/CasillaImpar.jpg");
-                        L.setIcon(CasillaRosa);
+                        if(x%2==0){  
+                            /*
+                            ImageIcon CasillaRosa = new ImageIcon("Casillas/CasillaImpar.jpg");
+                            L.setIcon(CasillaRosa);*/
+                            M.setBackground(Color.PINK);
+                        }else{
+                            /*ImageIcon CasillaAzul = new ImageIcon("Casillas/CasillaPar.jpg");
+                            L.setIcon(CasillaAzul);*/
+                            M.setBackground(Color.cyan);
+                        }
+                    
                     }
                     //Asigna los jugadores a la primera casilla:
+                    M.add(L);
                     if(ContadorCasillas == 1){
                         Tablero[y][x] = new Casillas(ContadorCasillas,M,L,FichasDeJugadores);
                     }else{
                         Tablero[y][x] = new Casillas(ContadorCasillas,M,L,null);
-                    }
+                    }             
                     ContadorCasillas++;    
                 }
             }
