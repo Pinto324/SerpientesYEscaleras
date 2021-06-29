@@ -6,6 +6,7 @@
 package InterfazGrafica;
 
 import Partida.ManejadorDePartida;
+import Usuarios.ManejoDeUsuarios;
 import Utilidades.Ficha;
 import Utilidades.Partida;
 import java.awt.GridLayout;
@@ -14,6 +15,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,20 +26,25 @@ public class Tablero extends javax.swing.JFrame {
     ArrayList<Ficha> Fichas = new ArrayList<>();
     JLabel L = new javax.swing.JLabel();
     JLabel A = new javax.swing.JLabel();
+    JLabel N = new javax.swing.JLabel();
     ManejadorDePartida Admin = new ManejadorDePartida();
     private int Turno = 0;
     Ficha J1;
     Ficha J2;
+    Ficha J3;
     int ContadorPanel=0;
     Partida Partida;
     public Tablero() {
         initComponents();
-        L.setIcon(new ImageIcon("Fichas/FichaA.png"));
-        J1 = new Ficha(1,L,"Martin",1);
+        N.setIcon(new ImageIcon("Fichas/FichaA.png"));
+        J1 = new Ficha(1,N,"Martin",1);
         A.setIcon(new ImageIcon("Fichas/FichaN.png"));
         J2 = new Ficha(1, A,"Alla",1);
+        L.setIcon(new ImageIcon("Fichas/FichaAma.png"));
+        J3 = new Ficha(1, L,"Noel",1);
         Fichas.add(J1);
         Fichas.add(J2);
+        Fichas.add(J3);
         Partida = new Partida(Fichas,3,3);
         PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
         MostrarSuelo();
@@ -291,9 +298,19 @@ public class Tablero extends javax.swing.JFrame {
         } 
     }   
     public void EvaluarGanador(){
-        System.out.println(Partida.getColumnas()*Partida.getFilas());
         if(Fichas.get(Turno).getCasillaActual()>=(Partida.getColumnas()*Partida.getFilas())){
-            System.out.println("Felicidades haz ganado");
+            for (int i = 0; i < ManejoDeUsuarios.getListaUsuarios().size() ; i++) {
+                for (int j = 0; j < ManejoDeUsuarios.getListaUsuarios().size() ; j++) {
+                    //Asignandole la victoria al ganador
+                    if(ManejoDeUsuarios.getListaUsuarios().get(i).getId()==Fichas.get(Turno).getIdDeJugador()){
+                    ManejoDeUsuarios.getListaUsuarios().get(i).setPartidasGanadas(ManejoDeUsuarios.getListaUsuarios().get(i).getPartidasGanadas()+1);
+                    }else if(ManejoDeUsuarios.getListaUsuarios().get(i).getId()==Fichas.get(j).getIdDeJugador()&&!(ManejoDeUsuarios.getListaUsuarios().get(i).getId()==Fichas.get(Turno).getIdDeJugador())){
+                    //Asignando la derrota a los perdedores
+                    ManejoDeUsuarios.getListaUsuarios().get(i).setPartidasGanadas(ManejoDeUsuarios.getListaUsuarios().get(i).getPartidasPerdidas()+1);
+                    }
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Felicidades "+Fichas.get(Turno).getNombreDeJugador()+" has ganado!");
             main.main.Menu.setVisible(true);
             this.dispose();        
         }
@@ -315,7 +332,6 @@ public class Tablero extends javax.swing.JFrame {
                         if(this.Partida.getTablero()[x][y].getFichasEnLaCasilla()!=null){
                             for (int i = 0; i < this.Partida.getTablero()[x][y].getFichasEnLaCasilla().size() ; i++) {
                                 this.Partida.getTablero()[x][y].getCasilla().add(this.Partida.getTablero()[x][y].getFichasEnLaCasilla().get(i).getImagenFicha());
-                                System.out.println("Asigno valores de fichas");
                             }
                         }
                         }catch(java.lang.NullPointerException e){
@@ -325,10 +341,5 @@ public class Tablero extends javax.swing.JFrame {
                 }
         }
         this.PanelDeTablero.repaint();
-    }
-    public void a (){
-        for (int y = 0; y < 10 ; y++) {
-        
-        }
     }
 }
