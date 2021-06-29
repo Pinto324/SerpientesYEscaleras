@@ -14,7 +14,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  *
@@ -29,6 +28,7 @@ public class Tablero extends javax.swing.JFrame {
     private int Turno = 0;
     Ficha J1;
     Ficha J2;
+    int ContadorPanel=0;
     Partida Partida;
     public Tablero() {
         initComponents();
@@ -38,8 +38,8 @@ public class Tablero extends javax.swing.JFrame {
         J2 = new Ficha(1, A,"Alla",1);
         Fichas.add(J1);
         Fichas.add(J2);
-        Partida = new Partida(Fichas,10,10);
-        PanelDeTablero.setLayout(new GridLayout(10,10));
+        Partida = new Partida(Fichas,3,3);
+        PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
         MostrarSuelo();
     }
 
@@ -213,7 +213,7 @@ public class Tablero extends javax.swing.JFrame {
 
     private void BotonEmpezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEmpezarActionPerformed
         BotonEmpezar.setEnabled(false);
-        BotonParar.setEnabled(true);
+        BotonParar.setEnabled(true);        
         Timer timer = new Timer();
         TimerTask tarea = new TimerTask(){
          @Override
@@ -221,22 +221,19 @@ public class Tablero extends javax.swing.JFrame {
             Admin.ManejarDado(ImagenDado); 
                 if(!(BotonParar.isEnabled())){
                     timer.cancel();
-                    Ficha Follado = Fichas.get(Turno);
-                    System.out.println(Fichas.get(Turno).getCasillaActual());
-                    Partida.BorrarFichaPorNo(Follado);
-                    int A = 0;
-                    System.out.println(Turno);
-                    try{
-                    A = Fichas.get(Turno).getCasillaActual();
-                    }catch(java.lang.IndexOutOfBoundsException e){
-                    }
-                    Fichas.get(Turno).setCasillaActual(A+Admin.getAvance());
+                    ArrayList<Ficha> Nube = new ArrayList<>(Fichas);
+                    Partida.BorrarFichaPorNo(Fichas.get(Turno));
+                    Fichas = Nube;
+                    int A;
+                    Fichas.get(Turno).setCasillaActual(Fichas.get(Turno).getCasillaActual()+Admin.getAvance());
                     Partida.MeterFichaPorNo(Fichas.get(Turno));
-                    ReMostrarSuelo();
                     EvaluarGanador();
                     BotonEmpezar.setEnabled(false);
                     BotonTurno.setEnabled(true);
                     Turno++;
+                    if(Turno == Fichas.size()){
+                    Turno = 0;
+                    }
                 }
             }
         };
@@ -244,15 +241,15 @@ public class Tablero extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonEmpezarActionPerformed
 
     private void BotonPararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonPararActionPerformed
-        BotonParar.setEnabled(false);        
+        BotonParar.setEnabled(false);   
     }//GEN-LAST:event_BotonPararActionPerformed
 
     private void BotonTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonTurnoActionPerformed
         LabelDeJugador.setText(Fichas.get(Turno).getNombreDeJugador());
         BotonEmpezar.setEnabled(true);
-        if(Turno == Fichas.size()-1){
-            Turno = 0;
-        }BotonTurno.setEnabled(false);
+        ImagenDado.setIcon(null);
+        ReMostrarSuelo();
+        BotonTurno.setEnabled(false);
     }//GEN-LAST:event_BotonTurnoActionPerformed
 
 
@@ -269,8 +266,8 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
     public void MostrarSuelo(){
-        for (int x = 0; x < 10 ; x++) {
-                for (int y = 0; y < 10 ; y++) {
+        for (int x = 0; x < Partida.getColumnas() ; x++) {
+                for (int y = 0; y < Partida.getFilas() ; y++) {
                     try{
                         //Ver Las fichas en la casilla:
                         if(Partida.getTablero()[x][y].getFichasEnLaCasilla().size()<=2){
@@ -288,44 +285,50 @@ public class Tablero extends javax.swing.JFrame {
                                 Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(1,1));
                             }
                         }catch(java.lang.NullPointerException e){
-                    }
-                    JPanel A = this.Partida.getTablero()[x][y].getCasilla();    
-                    PanelDeTablero.add(A);
+                    }   
+                    PanelDeTablero.add(Partida.getTablero()[x][y].getCasilla());
                 }
-        }
+        } 
     }   
     public void EvaluarGanador(){
-        if(Fichas.get(Turno).getCasillaActual()==(Partida.getColumnas()*Partida.getFilas())){
+        System.out.println(Partida.getColumnas()*Partida.getFilas());
+        if(Fichas.get(Turno).getCasillaActual()>=(Partida.getColumnas()*Partida.getFilas())){
             System.out.println("Felicidades haz ganado");
             main.main.Menu.setVisible(true);
-            dispose();        
+            this.dispose();        
         }
     }
     public void ReMostrarSuelo(){
-        PanelDeTablero.setLayout(new GridLayout(10,10));
-        for (int x = 0; x < 10 ; x++) {
-                for (int y = 0; y < 10 ; y++) {
+        PanelDeTablero.removeAll();
+        this.PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
+        for (int x = 0; x < Partida.getColumnas() ; x++) {
+                for (int y = 0; y < Partida.getFilas() ; y++) {
                     try{
                         //Ver Las fichas en la casilla:
-                        if(Partida.getTablero()[x][y].getFichasEnLaCasilla().size()<=2){
-                            Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,1));
-                        }else if(Partida.getTablero()[x][y].getFichasEnLaCasilla().size()<=4){
-                            Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,2));
+                        if(this.Partida.getTablero()[x][y].getFichasEnLaCasilla().size()<=2){
+                            this.Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,1));
+                        }else if(this.Partida.getTablero()[x][y].getFichasEnLaCasilla().size()<=4){
+                            this.Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,2));
                         }else{
-                            Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,3));
+                            this.Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,3));
                         }
-                        if(Partida.getTablero()[x][y].getFichasEnLaCasilla()!=null){
-                            for (int i = 0; i < Partida.getTablero()[x][y].getFichasEnLaCasilla().size() ; i++) {
-                                Partida.getTablero()[x][y].getCasilla().add(Partida.getTablero()[x][y].getFichasEnLaCasilla().get(i).getImagenFicha());
+                        if(this.Partida.getTablero()[x][y].getFichasEnLaCasilla()!=null){
+                            for (int i = 0; i < this.Partida.getTablero()[x][y].getFichasEnLaCasilla().size() ; i++) {
+                                this.Partida.getTablero()[x][y].getCasilla().add(this.Partida.getTablero()[x][y].getFichasEnLaCasilla().get(i).getImagenFicha());
+                                System.out.println("Asigno valores de fichas");
                             }
-                            }else{
-                                Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(1,1));
-                            }
+                        }
                         }catch(java.lang.NullPointerException e){
-                    }
-                    JPanel A = this.Partida.getTablero()[x][y].getCasilla();    
-                    PanelDeTablero.add(A);
+                       this.Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(1,1));
+                    }        
+                    this.PanelDeTablero.add(this.Partida.getTablero()[x][y].getCasilla());
                 }
-        }   
+        }
+        this.PanelDeTablero.repaint();
+    }
+    public void a (){
+        for (int y = 0; y < 10 ; y++) {
+        
+        }
     }
 }

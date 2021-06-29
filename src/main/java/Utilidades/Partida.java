@@ -111,9 +111,11 @@ public class Partida {
         for (int x = 0; x < Columnas ; x++) {
             for (int y = 0; y < Filas ; y++) {
                 if(Tablero[x][y].getNoCasilla()==F.getCasillaActual()){
-                    for (int i = 0; i < FichasDeJugadores.size() ; i++) {
-                        if(FichasDeJugadores.get(i).equals(F)){
+                    for (int i = 0; i <  Tablero[x][y].getFichasEnLaCasilla().size() ; i++) {
+                        if( Tablero[x][y].getFichasEnLaCasilla().get(i).equals(F)){
                             Tablero[x][y].getFichasEnLaCasilla().remove(i);
+                        }else{
+                        
                         }
                     }
                 }
