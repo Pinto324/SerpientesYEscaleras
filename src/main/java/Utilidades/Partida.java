@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Partida {
-    private Casillas[][] Tablero;
+    private Casillas[][] Tablero = null;
     private ArrayList<Ficha> FichasDeJugadores;
     private int Filas;
     private int Columnas;
@@ -29,10 +29,11 @@ public class Partida {
         Tablero = new Casillas[Y][X];
         LlenarTablero();
     }
+    
     //Constructor para tablero por archivo:
-
-    public Partida(int X, int Y, List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados,List<List<Integer>> CSerpientes,List<List<Integer>> CPierdeTurno,List<List<Integer>> CEscalera) {
-        
+    public Partida(ArrayList<Ficha> FichasEnLaCasilla,int X, int Y, List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados,List<List<Integer>> CSerpientes,List<List<Integer>> CPierdeTurno,List<List<Integer>> CEscalera){
+        this.FichasDeJugadores = FichasEnLaCasilla;
+        LlenarTablero(X,Y, CRetrocede,CAvanza,CTiraDados,CSerpientes,CPierdeTurno,CEscalera);
     }
     
 
@@ -189,6 +190,8 @@ public class Partida {
     //Metodo para constructor manual
     public void LlenarTablero(int X, int Y, List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados,List<List<Integer>> CSerpientes,List<List<Integer>> CPierdeTurno,List<List<Integer>> CEscalera){
         int ContadorCasillas = 1;
+        List<List<Integer>> LugarCabeza = new ArrayList<>();
+        List<List<Integer>> LugarEscaleras = new ArrayList<>();
         for (int x = X -1; x > -1 ; x--) {
             for (int y = Y -1; y > -1 ; y--) {
                     JPanel M = new javax.swing.JPanel();
@@ -209,59 +212,90 @@ public class Partida {
                     //Asigna los jugadores a la primera casilla:
                     M.add(L);
                     for(int i = 0; i < CRetrocede.size(); i++){
+                        //primera casilla:
                         if(ContadorCasillas == 1){
                             Tablero[x][y] = new Casillas(ContadorCasillas,M,L,FichasDeJugadores);
-                        }else if(CRetrocede.get(i).get(0)==X && CRetrocede.get(i).get(1)==Y){
+                        //Para crear casilla de retrocede:
+                        }else if(CRetrocede.get(i).get(0)==x && CRetrocede.get(i).get(1)==y){
                                 JPanel PanelR = new javax.swing.JPanel();
                                 JLabel LabelR = new javax.swing.JLabel(); 
                                 PanelR.setBackground(Color.ORANGE);
                                 Tablero[CRetrocede.get(i).get(0)][CRetrocede.get(i).get(1)]= new CasillaRetrocede(ContadorCasillas,PanelR,LabelR,null,CRetrocede.get(i).get(2));
-                        }else if(CAvanza.get(i).get(0)==X && CAvanza.get(i).get(1)==Y){
+                        //Para crear casilla de avanza:
+                        }else if(CAvanza.get(i).get(0)==x && CAvanza.get(i).get(1)==y){
                             JPanel PanelR = new javax.swing.JPanel();
                             JLabel LabelR = new javax.swing.JLabel(); 
-                            PanelR.setBackground(Color.ORANGE);
-                            Tablero[CAvanza.get(i).get(0)][CAvanza.get(i).get(1)]= new CasillaRetrocede(ContadorCasillas,PanelR,LabelR,null,CAvanza.get(i).get(2));
-                        }
-                    }
-                    
-                            if(Serpientes.get(i) == ContadorCasillas){
-                                JLabel Cola = new javax.swing.JLabel(); 
-                                Cola.setIcon(new ImageIcon("Casillas/ColaSerpienteV.png"));
-                                JPanel C = new javax.swing.JPanel(); 
-                                C.add(Cola);
-                                C.setBackground(Color.red);
-                                Tablero[x][y] = new CasillaSerpiente(SerpientesRegreso.get(i),ContadorCasillas,C,Cola,null);
-                            }else if(SerpientesRegreso.get(i) == ContadorCasillas){
-                                JLabel Cabeza = new javax.swing.JLabel(); 
-                                Cabeza.setIcon(new ImageIcon("Casillas/CabezaSerpienteV.png"));
-                                JPanel PanelCabeza = new javax.swing.JPanel();
-                                PanelCabeza.add(Cabeza);
-                                PanelCabeza.setBackground(Color.red);
-                                Tablero[x][y] = new Casillas(SerpientesRegreso.get(i),PanelCabeza,Cabeza,null);
+                            PanelR.setBackground(Color.BLUE);
+                            Tablero[CAvanza.get(i).get(0)][CAvanza.get(i).get(1)]= new CasillaAvanza(ContadorCasillas,PanelR,LabelR,null,CAvanza.get(i).get(2));
+                        //Para tirar dados
+                        }else if(CTiraDados.get(i).get(0)==x && CTiraDados.get(i).get(1)==y){
+                            JPanel PanelR = new javax.swing.JPanel();
+                            JLabel LabelR = new javax.swing.JLabel(); 
+                            PanelR.setBackground(Color.WHITE);
+                            Tablero[x][y]= new CasillaTirarDados(ContadorCasillas,PanelR,LabelR,null);
+                        //Para perder turno:
+                        }else if(CPierdeTurno.get(i).get(0)==x && CPierdeTurno.get(i).get(1)==y){
+                            JPanel PanelR = new javax.swing.JPanel();
+                            JLabel LabelR = new javax.swing.JLabel(); 
+                            PanelR.setBackground(Color.BLACK);
+                            Tablero[x][y]= new CasillaPerderTurno(ContadorCasillas,PanelR,LabelR,null);
+                        //Para serpientes cola:
+                        }else if(CSerpientes.get(i).get(0)==x && CSerpientes.get(i).get(1)==y){
+                            int CabezaPotencial = 2;
+                            JPanel PanelR = new javax.swing.JPanel();
+                            JLabel LabelR = new javax.swing.JLabel();
+                            LabelR.setIcon(new ImageIcon("Casillas/ColaSerpienteV.png"));
+                            PanelR.add(LabelR);
+                            PanelR.setBackground(Color.red);
+                            for(int j = 0; j < CRetrocede.size(); j++){
+                                if(LugarCabeza.get(i).get(0)==CSerpientes.get(i).get(2)&&LugarCabeza.get(i).get(1)==CSerpientes.get(i).get(3)){
+                                    CabezaPotencial= LugarCabeza.get(i).get(2);
+                                }
                             }
-                        }catch(IndexOutOfBoundsException e){
-                        }
-                    }  
-                    //Asignando escaleras:
-                    for (int i = 0; i < NoEscaleras ; i++) {
-                        if(EscalerasFinal.get(i) == ContadorCasillas){
-                                JLabel Final = new javax.swing.JLabel(); 
-                                Final.setIcon(new ImageIcon("Casillas/EscaleraFinal.png"));
-                                JPanel PanelFinal = new javax.swing.JPanel(); 
-                                PanelFinal.add(Final);
-                                PanelFinal.setBackground(Color.GREEN);
-                                Tablero[x][y] = new Casillas(EscalerasFinal.get(i),PanelFinal,Final,null);
-                            }else if(Escaleras.get(i) == ContadorCasillas){
-                                JLabel Inicio = new javax.swing.JLabel(); 
-                                Inicio.setIcon(new ImageIcon("Casillas/EscaleraInicio.png"));
-                                JPanel PanelInicio = new javax.swing.JPanel();
-                                PanelInicio.add(Inicio);
-                                PanelInicio.setBackground(Color.GREEN);
-                                Tablero[x][y] = new CasillaEscalera(EscalerasFinal.get(i),ContadorCasillas,PanelInicio,Inicio,null);
+                            Tablero[x][y]= new CasillaSerpiente(CabezaPotencial,ContadorCasillas,PanelR,LabelR,null);
+                        //Para serpientes cabeza:
+                        }else if(CSerpientes.get(i).get(2)==x && CSerpientes.get(i).get(3)==y){
+                            JPanel PanelR = new javax.swing.JPanel();
+                            JLabel LabelR = new javax.swing.JLabel();
+                            LabelR.setIcon(new ImageIcon("Casillas/CabezaSerpienteV.png"));
+                            PanelR.add(LabelR);
+                            PanelR.setBackground(Color.red);
+                            ArrayList<Integer> CasillaS = new ArrayList<>();
+                            CasillaS.add(x);
+                            CasillaS.add(y);
+                            CasillaS.add(ContadorCasillas);
+                            LugarCabeza.add(CasillaS);
+                            Tablero[x][y]= new Casillas(ContadorCasillas,PanelR,LabelR,null);
+                        //Para escalera final
+                        }else if(CEscalera.get(i).get(2)==x && CEscalera.get(i).get(3)==y){
+                            JPanel PanelR = new javax.swing.JPanel();
+                            JLabel LabelR = new javax.swing.JLabel();
+                            LabelR.setIcon(new ImageIcon("Casillas/EscaleraFinal.png"));
+                            PanelR.add(LabelR);
+                            PanelR.setBackground(Color.GREEN);
+                            ArrayList<Integer> EscaleraS = new ArrayList<>();
+                            EscaleraS.add(x);
+                            EscaleraS.add(y);
+                            EscaleraS.add(ContadorCasillas);
+                            LugarEscaleras.add(EscaleraS);
+                            Tablero[x][y]= new Casillas(ContadorCasillas,PanelR,LabelR,null);
+                        //Para Escalera abajo:
+                        }else if(CEscalera.get(i).get(0)==x && CEscalera.get(i).get(1)==y){
+                            int LugarEscalera = (X*Y)-3;
+                            JPanel PanelR = new javax.swing.JPanel();
+                            JLabel LabelR = new javax.swing.JLabel();
+                            LabelR.setIcon(new ImageIcon("Casillas/EscaleraInicio.png"));
+                            PanelR.add(LabelR);
+                            PanelR.setBackground(Color.GREEN);
+                            for(int j = 0; j < LugarEscaleras.size(); j++){
+                                if(LugarEscaleras.get(i).get(0)==CEscalera.get(i).get(2)&&LugarEscaleras.get(i).get(1)==CEscalera.get(i).get(3)){
+                                    LugarEscalera= LugarEscaleras.get(i).get(2);
+                                }
                             }
-                    }
-                    if(!(ContadorCasillas == 1||ContadorCasillas== EscalerasFinal.get(0)||ContadorCasillas== EscalerasFinal.get(1)||ContadorCasillas== Escaleras.get(0)||ContadorCasillas== Escaleras.get(1) ||ContadorCasillas == SerpientesRegreso.get(0)||ContadorCasillas == SerpientesRegreso.get(1)||ContadorCasillas == Serpientes.get(0)||ContadorCasillas == Serpientes.get(1) )){
-                        Tablero[x][y] = new Casillas(ContadorCasillas,M,L,null);
+                            Tablero[x][y]= new CasillaEscalera(LugarEscalera,ContadorCasillas,PanelR,LabelR,null);
+                        }else if(Tablero[x][y]==null){
+                            Tablero[x][y] = new Casillas(ContadorCasillas,M,L,null);
+                        }                        
                     }
                     ContadorCasillas++; 
                 }      

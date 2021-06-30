@@ -12,6 +12,7 @@ import Utilidades.Ficha;
 import Utilidades.Partida;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JOptionPane;
@@ -23,14 +24,24 @@ import javax.swing.JOptionPane;
 public class Tablero extends javax.swing.JFrame {
 
     ArrayList<Ficha> Fichas = new ArrayList<>();
+    ArrayList<Boolean> TurnoPerdido = new ArrayList<>();
     ManejadorDePartida Admin = new ManejadorDePartida();
     private int Turno = 0;
     Partida Partida;
+    private boolean Repetir = false;
     public Tablero(ArrayList<Ficha> Fichas) {
         initComponents();
         this.Fichas = Fichas;
         Partida = new Partida(Fichas,3,3,2,2,2);
         PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
+        ReMostrarSuelo();
+    }
+    public Tablero(ArrayList<Ficha> FichasEnLaCasilla,int X, int Y, List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados,List<List<Integer>> CSerpientes,List<List<Integer>> CPierdeTurno,List<List<Integer>> CEscalera){
+        initComponents();
+        this.Fichas = FichasEnLaCasilla;
+        Partida = new Partida(FichasEnLaCasilla,X, Y, CRetrocede, CAvanza,CTiraDados, CSerpientes, CPierdeTurno, CEscalera);
+        PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
+        AsignarTurnosPerdidos();
         ReMostrarSuelo();
     }
 
@@ -221,10 +232,18 @@ public class Tablero extends javax.swing.JFrame {
                     EvaluarGanador();
                     BotonEmpezar.setEnabled(false);
                     BotonTurno.setEnabled(true);
-                    Turno++;
-                        if(Turno == Fichas.size()){
-                            Turno = 0;
+                        if(Repetir){
+                            Repetir = false;
+                        }else if(TurnoPerdido.get(Turno)){
+                            JOptionPane.showMessageDialog(null, Fichas.get(Turno).getNombreDeJugador()+" tiene un turno perdido");
+                            Turno++;
+                            TurnoPerdido.set(Turno, false);
+                        }else{
+                            Turno++;
                         }
+                            if(Turno == Fichas.size()){
+                                Turno = 0;
+                            }
                 }
             }
         };
@@ -343,9 +362,31 @@ public class Tablero extends javax.swing.JFrame {
                         CasillaEscalera ce =(CasillaEscalera) Partida.getTablero()[x][y];
                         Fichas.get(Turno).setCasillaActual(ce.getCasillaAAvanzar());
                         JOptionPane.showMessageDialog(null, "En hora buena! has encontrado una escalera "+Fichas.get(Turno).getNombreDeJugador()+" has subido a la casilla "+ce.getCasillaAAvanzar());
+                    //Evaluando si es TiraDados
+                    }else if(Partida.getTablero()[x][y] instanceof CasillaTirarDados){
+                        JOptionPane.showMessageDialog(null, "Wow "+Fichas.get(Turno).getNombreDeJugador()+" puedes tirar dados otra vez!");
+                    //Evaluando si es PierdeTurno
+                    }else if(Partida.getTablero()[x][y] instanceof CasillaPierdeTurno){
+                        JOptionPane.showMessageDialog(null, "Oh... mala suerte "+Fichas.get(Turno).getNombreDeJugador()+" has perdido un turno");
+                        TurnoPerdido.set(Turno, true);
+                    //Evaluando si es Avanza
+                    }else if(Partida.getTablero()[x][y] instanceof CasillaAvanza){
+                        CasillaAvanza a =(CasillaAvanza) Partida.getTablero()[x][y];
+                        JOptionPane.showMessageDialog(null, "Que suerte! "+Fichas.get(Turno).getNombreDeJugador()+" has avanzado " +a.getCasillasAtras()+" casillas!");
+                        Fichas.get(Turno).setCasillaActual(Fichas.get(Turno).getCasillaActual()+a.getCasillasAtras());
+                    //Evaluando si es Retrocede
+                    }else if(Partida.getTablero()[x][y] instanceof CasillaRetrocede){
+                        CasillaRetrocede a =(CasillaRetrocede) Partida.getTablero()[x][y];
+                        JOptionPane.showMessageDialog(null, "Que mal! "+Fichas.get(Turno).getNombreDeJugador()+" has retrocedido " +a.getCasillasAtras()+" casillas...");
+                        Fichas.get(Turno).setCasillaActual(Fichas.get(Turno).getCasillaActual()-a.getCasillasAtras());
                     }
                 }
             }
+        }
+    }
+    public void AsignarTurnosPerdidos(){
+        for (int x = 0; x < Fichas.size() ; x++) {
+            TurnoPerdido.add(false);
         }
     }
 }
