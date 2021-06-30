@@ -12,15 +12,13 @@ public class Casillas implements Movimiento{
     private JPanel Casilla;
     private JLabel ImagenDeCasilla;
     private ArrayList<Ficha> FichasEnLaCasilla;
-
     public Casillas(int NoCasilla, JPanel Casilla, JLabel ImagenDeCasilla, ArrayList<Ficha> FichasEnLaCasilla) {
         this.NoCasilla = NoCasilla;
         this.Casilla = Casilla;
         this.ImagenDeCasilla = ImagenDeCasilla;
         this.FichasEnLaCasilla = FichasEnLaCasilla;
     }
-    
-
+   
     public int getNoCasilla() {
         return NoCasilla;
     }

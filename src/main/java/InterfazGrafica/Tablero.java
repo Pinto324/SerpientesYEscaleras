@@ -7,14 +7,13 @@ package InterfazGrafica;
 
 import Partida.ManejadorDePartida;
 import Usuarios.ManejoDeUsuarios;
+import Utilidades.*;
 import Utilidades.Ficha;
 import Utilidades.Partida;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,30 +23,15 @@ import javax.swing.JOptionPane;
 public class Tablero extends javax.swing.JFrame {
 
     ArrayList<Ficha> Fichas = new ArrayList<>();
-    JLabel L = new javax.swing.JLabel();
-    JLabel A = new javax.swing.JLabel();
-    JLabel N = new javax.swing.JLabel();
     ManejadorDePartida Admin = new ManejadorDePartida();
     private int Turno = 0;
-    Ficha J1;
-    Ficha J2;
-    Ficha J3;
-    int ContadorPanel=0;
     Partida Partida;
-    public Tablero() {
+    public Tablero(ArrayList<Ficha> Fichas) {
         initComponents();
-        N.setIcon(new ImageIcon("Fichas/FichaA.png"));
-        J1 = new Ficha(1,N,"Martin",1);
-        A.setIcon(new ImageIcon("Fichas/FichaN.png"));
-        J2 = new Ficha(1, A,"Alla",1);
-        L.setIcon(new ImageIcon("Fichas/FichaAma.png"));
-        J3 = new Ficha(1, L,"Noel",1);
-        Fichas.add(J1);
-        Fichas.add(J2);
-        Fichas.add(J3);
-        Partida = new Partida(Fichas,3,3);
+        this.Fichas = Fichas;
+        Partida = new Partida(Fichas,8,8,2,2,2);
         PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
-        MostrarSuelo();
+        ReMostrarSuelo();
     }
 
 
@@ -231,16 +215,16 @@ public class Tablero extends javax.swing.JFrame {
                     ArrayList<Ficha> Nube = new ArrayList<>(Fichas);
                     Partida.BorrarFichaPorNo(Fichas.get(Turno));
                     Fichas = Nube;
-                    int A;
                     Fichas.get(Turno).setCasillaActual(Fichas.get(Turno).getCasillaActual()+Admin.getAvance());
+                    CompararCasillaE();
                     Partida.MeterFichaPorNo(Fichas.get(Turno));
                     EvaluarGanador();
                     BotonEmpezar.setEnabled(false);
                     BotonTurno.setEnabled(true);
                     Turno++;
-                    if(Turno == Fichas.size()){
-                    Turno = 0;
-                    }
+                        if(Turno == Fichas.size()){
+                            Turno = 0;
+                        }
                 }
             }
         };
@@ -288,12 +272,14 @@ public class Tablero extends javax.swing.JFrame {
                             for (int i = 0; i < Partida.getTablero()[x][y].getFichasEnLaCasilla().size() ; i++) {
                                 Partida.getTablero()[x][y].getCasilla().add(Partida.getTablero()[x][y].getFichasEnLaCasilla().get(i).getImagenFicha());
                             }
-                            }else{
-                                Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(1,1));
-                            }
+                        }else{
+                            Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(1,1));
+                        }
                         }catch(java.lang.NullPointerException e){
                     }   
-                    PanelDeTablero.add(Partida.getTablero()[x][y].getCasilla());
+                        if(Partida.getTablero()[x][y] instanceof CasillaSerpiente){
+                            PanelDeTablero.add(Partida.getTablero()[x][y].getCasilla());
+                        }
                 }
         } 
     }   
@@ -303,10 +289,10 @@ public class Tablero extends javax.swing.JFrame {
                 for (int j = 0; j < ManejoDeUsuarios.getListaUsuarios().size() ; j++) {
                     //Asignandole la victoria al ganador
                     if(ManejoDeUsuarios.getListaUsuarios().get(i).getId()==Fichas.get(Turno).getIdDeJugador()){
-                    ManejoDeUsuarios.getListaUsuarios().get(i).setPartidasGanadas(ManejoDeUsuarios.getListaUsuarios().get(i).getPartidasGanadas()+1);
+                        ManejoDeUsuarios.AsignarVictoriaPorID(Fichas.get(Turno).getIdDeJugador());
                     }else if(ManejoDeUsuarios.getListaUsuarios().get(i).getId()==Fichas.get(j).getIdDeJugador()&&!(ManejoDeUsuarios.getListaUsuarios().get(i).getId()==Fichas.get(Turno).getIdDeJugador())){
                     //Asignando la derrota a los perdedores
-                    ManejoDeUsuarios.getListaUsuarios().get(i).setPartidasGanadas(ManejoDeUsuarios.getListaUsuarios().get(i).getPartidasPerdidas()+1);
+                        ManejoDeUsuarios.AsignarDerrotaPorID(ManejoDeUsuarios.getListaUsuarios().get(i).getId());
                     }
                 }
             }
@@ -341,5 +327,24 @@ public class Tablero extends javax.swing.JFrame {
                 }
         }
         this.PanelDeTablero.repaint();
+    }
+    public void CompararCasillaE(){
+        for (int x = 0; x < Partida.getColumnas() ; x++) {
+            for (int y = 0; y < Partida.getFilas() ; y++) {
+                if(Partida.getTablero()[x][y].getNoCasilla()==Fichas.get(Turno).getCasillaActual()){
+                    //Evaluando si es serpiente
+                    if(Partida.getTablero()[x][y] instanceof CasillaSerpiente){
+                        CasillaSerpiente a =(CasillaSerpiente) Partida.getTablero()[x][y];
+                        Fichas.get(Turno).setCasillaActual(a.getCasillaDeregreso());
+                        JOptionPane.showMessageDialog(null, "Whooops "+Fichas.get(Turno).getNombreDeJugador()+" has caido en la cola de serpiente en la casilla "+ Partida.getTablero()[x][y].getNoCasilla()+" regresas a la casilla "+a.getCasillaDeregreso());
+                    //Evaluando si es escalera
+                    }else if(Partida.getTablero()[x][y] instanceof CasillaEscalera){
+                        CasillaEscalera ce =(CasillaEscalera) Partida.getTablero()[x][y];
+                        Fichas.get(Turno).setCasillaActual(ce.getCasillaAAvanzar());
+                        JOptionPane.showMessageDialog(null, "En hora buena! has encontrado una escalera "+Fichas.get(Turno).getNombreDeJugador()+" has subido a la casilla "+ce.getCasillaAAvanzar());
+                    }
+                }
+            }
+        }
     }
 }

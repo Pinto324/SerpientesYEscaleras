@@ -108,7 +108,7 @@ public class DatosDeUsuarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotonRegresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonRegresoActionPerformed
-        main.main.Menu.setVisible(true);
+        main.main.Menu.setVisible(true);    
         dispose();
     }//GEN-LAST:event_BotonRegresoActionPerformed
 

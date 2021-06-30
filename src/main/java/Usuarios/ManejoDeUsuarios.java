@@ -92,4 +92,36 @@ public class ManejoDeUsuarios {
             }
         }
     }
+    public static int BuscarIdPorNombre(String Nombre){
+        for (int i = 0; i < ListaUsuarios.size(); i++) {
+            if(ListaUsuarios.get(i).getNombre().equals(Nombre)){
+                return ListaUsuarios.get(i).getId();
+            }
+        }
+        return -1;
+    }
+    public static void AsignarJuegoPorNombre(String Nombre){
+        for (int i = 0; i < ListaUsuarios.size(); i++) {
+            if(ListaUsuarios.get(i).getNombre().equals(Nombre)){
+                int Partidas =ListaUsuarios.get(i).getPartidasJugadas();
+                ListaUsuarios.get(i).setPartidasJugadas(Partidas+1);
+            }
+        }
+    }
+    public static void AsignarDerrotaPorID(int id){
+        for (int i = 0; i < ListaUsuarios.size(); i++) {
+            if(ListaUsuarios.get(i).getId()==id){
+                int Partidas =ListaUsuarios.get(i).getPartidasPerdidas();
+                ListaUsuarios.get(i).setPartidasPerdidas(Partidas+1);
+            }
+        }
+    }
+    public static void AsignarVictoriaPorID(int id){
+        for (int i = 0; i < ListaUsuarios.size(); i++) {
+            if(ListaUsuarios.get(i).getId()==id){
+                int Partidas =ListaUsuarios.get(i).getPartidasGanadas();
+                ListaUsuarios.get(i).setPartidasGanadas(Partidas+1);
+            }
+        }
+    }
 }

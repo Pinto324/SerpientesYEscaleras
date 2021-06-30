@@ -1,6 +1,9 @@
 
 package InterfazGrafica;
 
+import Usuarios.ManejoDeUsuarios;
+import javax.swing.JOptionPane;
+
 public class MenuPrincipal extends javax.swing.JFrame {
     static IngresoDeUsuario Ingreso = new IngresoDeUsuario();
     public MenuPrincipal() {
@@ -131,11 +134,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonMostrarDatosActionPerformed
 
     private void BotonJugarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonJugarPartidaActionPerformed
-        Tablero NuevoTablero = new Tablero();
+        if(ManejoDeUsuarios.getListaUsuarios().size() > 1){
+        ElegirJugadores NuevoTablero = new ElegirJugadores();
         this.setVisible(false);
         NuevoTablero.setVisible(true);
         NuevoTablero.setLocationRelativeTo(null);   
-        
+        NuevoTablero.setTitle("Elección de jugadores");
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede jugar una partida con menos de 2 jugadores, ingrese alguno porfavor");
+        }
     }//GEN-LAST:event_BotonJugarPartidaActionPerformed
 
 
