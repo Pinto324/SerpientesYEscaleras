@@ -236,7 +236,10 @@ public class ElegirJugadores extends javax.swing.JFrame {
     }//GEN-LAST:event_ComboBoxNoJMouseClicked
 
     private void BotonImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonImportarActionPerformed
-        
+        SubirTablero Subida = new SubirTablero(Fichas);
+        Subida.setVisible(true);
+        Subida.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_BotonImportarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

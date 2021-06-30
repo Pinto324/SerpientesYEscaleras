@@ -47,6 +47,7 @@ public class DatosDeUsuarios extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        TableDeDatos.setEnabled(false);
         jScrollPane1.setViewportView(TableDeDatos);
 
         jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 24)); // NOI18N

@@ -1,13 +1,8 @@
 
 package Partida;
 
-import Utilidades.Partida;
-import java.awt.GridLayout;
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class ManejadorDePartida {
     private static int Avance;

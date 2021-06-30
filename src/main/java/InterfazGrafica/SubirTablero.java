@@ -1,6 +1,7 @@
 
 package InterfazGrafica;
 
+import Partida.CrearTableroManual;
 import Utilidades.Ficha;
 import java.util.ArrayList;
 
@@ -45,8 +46,8 @@ public class SubirTablero extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void FActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FActionPerformed
-        F.getSelectedFile();
-        
+        CrearTableroManual.CargarArchivo(F.getSelectedFile(),Fichas);
+        this.dispose();
     }//GEN-LAST:event_FActionPerformed
 
 

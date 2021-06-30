@@ -36,6 +36,7 @@ public class Tablero extends javax.swing.JFrame {
         PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
         ReMostrarSuelo();
     }
+    
     public Tablero(ArrayList<Ficha> FichasEnLaCasilla,int X, int Y, List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados,List<List<Integer>> CSerpientes,List<List<Integer>> CPierdeTurno,List<List<Integer>> CEscalera){
         initComponents();
         this.Fichas = FichasEnLaCasilla;
@@ -365,6 +366,7 @@ public class Tablero extends javax.swing.JFrame {
                     //Evaluando si es TiraDados
                     }else if(Partida.getTablero()[x][y] instanceof CasillaTirarDados){
                         JOptionPane.showMessageDialog(null, "Wow "+Fichas.get(Turno).getNombreDeJugador()+" puedes tirar dados otra vez!");
+                        Repetir = true;
                     //Evaluando si es PierdeTurno
                     }else if(Partida.getTablero()[x][y] instanceof CasillaPierdeTurno){
                         JOptionPane.showMessageDialog(null, "Oh... mala suerte "+Fichas.get(Turno).getNombreDeJugador()+" has perdido un turno");

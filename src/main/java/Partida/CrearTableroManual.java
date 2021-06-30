@@ -1,18 +1,21 @@
 
 package Partida;
 
+import InterfazGrafica.Tablero;
+import Utilidades.Ficha;
 import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
 
 public class CrearTableroManual {
-    public static void CargarArchivo(File ArchivoACargar){
+    public static void CargarArchivo(File ArchivoACargar, ArrayList<Ficha> FichasEnLaCasilla){
         int[] TableroC = null;
         List<List<Integer>> CRetrocede = new ArrayList<>();
         List<List<Integer>> CAvanza = new ArrayList<>();
@@ -23,6 +26,8 @@ public class CrearTableroManual {
         FileReader fr = null;
         BufferedReader br = null;
             try{
+                fr = new FileReader(ArchivoACargar, StandardCharsets.UTF_8);
+                br = new BufferedReader(fr);
                 int pos;
                 String aux;
                 String Identificador;
@@ -135,7 +140,7 @@ public class CrearTableroManual {
                                     int X = Integer.valueOf(aux);
                                     
                                     linea = linea.substring(pos + 1);
-                                    pos = linea.indexOf(')');
+                                    pos = linea.indexOf(',');
                                     aux = linea.substring(0, pos);
                                     int Y = Integer.valueOf(aux);
                                     
@@ -244,7 +249,7 @@ public class CrearTableroManual {
                                     int X = Integer.valueOf(aux);
                                     
                                     linea = linea.substring(pos + 1);
-                                    pos = linea.indexOf(')');
+                                    pos = linea.indexOf(',');
                                     aux = linea.substring(0, pos);
                                     int Y = Integer.valueOf(aux);
                                     
@@ -292,7 +297,10 @@ public class CrearTableroManual {
                 } catch (IOException e2) {
                 }
             }
-            
+            Tablero TableroPerso = new Tablero(FichasEnLaCasilla,TableroC[0],TableroC[1],CRetrocede,CAvanza,CTiraDados,CSerpientes,CPierdeTurno,CEscalera);
+            TableroPerso.setVisible(true);
+            TableroPerso.setLocationRelativeTo(null);   
+            TableroPerso.setTitle("Tablero personalizado");
     }
     public static boolean ConfirmarExistencia(int Caso, ArrayList<Integer> Acomparar,List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados, List<List<Integer>> CSerpientes,List<List<Integer>> CPierdeTurno,List<List<Integer>> CEscalera ){
     if(Caso==1){
