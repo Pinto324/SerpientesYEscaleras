@@ -23,11 +23,11 @@ import javax.swing.JOptionPane;
  */
 public class Tablero extends javax.swing.JFrame {
 
-    ArrayList<Ficha> Fichas = new ArrayList<>();
-    ArrayList<Boolean> TurnoPerdido = new ArrayList<>();
-    ManejadorDePartida Admin = new ManejadorDePartida();
+    private ArrayList<Ficha> Fichas = new ArrayList<>();
+    private ArrayList<Boolean> TurnoPerdido = new ArrayList<>();
+    private ManejadorDePartida Admin = new ManejadorDePartida();
     private int Turno = 0;
-    Partida Partida;
+    private Partida Partida;
     private boolean Repetir = false;
     public Tablero(ArrayList<Ficha> Fichas) {
         initComponents();
@@ -36,11 +36,20 @@ public class Tablero extends javax.swing.JFrame {
         PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
         ReMostrarSuelo();
     }
-    
+    //constructor para tablero personalizado
     public Tablero(ArrayList<Ficha> FichasEnLaCasilla,int X, int Y, List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados,List<List<Integer>> CSerpientes,List<List<Integer>> CPierdeTurno,List<List<Integer>> CEscalera){
         initComponents();
         this.Fichas = FichasEnLaCasilla;
         Partida = new Partida(FichasEnLaCasilla,X, Y, CRetrocede, CAvanza,CTiraDados, CSerpientes, CPierdeTurno, CEscalera);
+        PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
+        AsignarTurnosPerdidos();
+        ReMostrarSuelo();
+    }
+    //Constructor para tablero sin serpientes y escaleras:
+    public Tablero(ArrayList<Ficha> FichasEnLaCasilla,int X, int Y, List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados,List<List<Integer>> CPierdeTurno){
+        initComponents();
+        this.Fichas = FichasEnLaCasilla;
+        Partida = new Partida(FichasEnLaCasilla,X, Y, CRetrocede, CAvanza,CTiraDados, CPierdeTurno);
         PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
         AsignarTurnosPerdidos();
         ReMostrarSuelo();
@@ -235,14 +244,15 @@ public class Tablero extends javax.swing.JFrame {
                     BotonTurno.setEnabled(true);
                         if(Repetir){
                             Repetir = false;
-                        }else if(TurnoPerdido.get(Turno)){
-                            JOptionPane.showMessageDialog(null, Fichas.get(Turno).getNombreDeJugador()+" tiene un turno perdido");
-                            Turno++;
-                            TurnoPerdido.set(Turno, false);
                         }else{
                             Turno++;
+                            if(TurnoPerdido.get(Turno)){
+                                JOptionPane.showMessageDialog(null, Fichas.get(Turno).getNombreDeJugador()+" tiene un turno perdido");
+                                Turno++;
+                                TurnoPerdido.set(Turno, false);
+                            }
                         }
-                            if(Turno == Fichas.size()){
+                            if(Turno >= Fichas.size()){
                                 Turno = 0;
                             }
                 }
@@ -256,6 +266,14 @@ public class Tablero extends javax.swing.JFrame {
     }//GEN-LAST:event_BotonPararActionPerformed
 
     private void BotonTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonTurnoActionPerformed
+        if(Turno >= Fichas.size()){
+            Turno = 0;
+            if(TurnoPerdido.get(Turno)){
+                                JOptionPane.showMessageDialog(null, Fichas.get(Turno).getNombreDeJugador()+" tiene un turno perdido");
+                                Turno++;
+                                TurnoPerdido.set(Turno, false);
+                            }
+        }
         LabelDeJugador.setText(Fichas.get(Turno).getNombreDeJugador());
         BotonEmpezar.setEnabled(true);
         ImagenDado.setIcon(null);
@@ -368,7 +386,7 @@ public class Tablero extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Wow "+Fichas.get(Turno).getNombreDeJugador()+" puedes tirar dados otra vez!");
                         Repetir = true;
                     //Evaluando si es PierdeTurno
-                    }else if(Partida.getTablero()[x][y] instanceof CasillaPierdeTurno){
+                    }else if(Partida.getTablero()[x][y] instanceof CasillaPerderTurno){
                         JOptionPane.showMessageDialog(null, "Oh... mala suerte "+Fichas.get(Turno).getNombreDeJugador()+" has perdido un turno");
                         TurnoPerdido.set(Turno, true);
                     //Evaluando si es Avanza

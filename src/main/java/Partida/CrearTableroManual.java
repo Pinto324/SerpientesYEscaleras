@@ -297,10 +297,17 @@ public class CrearTableroManual {
                 } catch (IOException e2) {
                 }
             }
-            Tablero TableroPerso = new Tablero(FichasEnLaCasilla,TableroC[0],TableroC[1],CRetrocede,CAvanza,CTiraDados,CSerpientes,CPierdeTurno,CEscalera);
-            TableroPerso.setVisible(true);
-            TableroPerso.setLocationRelativeTo(null);   
-            TableroPerso.setTitle("Tablero personalizado");
+            if(CSerpientes.isEmpty()&&CEscalera.isEmpty()){
+                Tablero TableroPerso = new Tablero(FichasEnLaCasilla,TableroC[0],TableroC[1],CRetrocede,CAvanza,CTiraDados,CPierdeTurno);
+                TableroPerso.setVisible(true);
+                TableroPerso.setLocationRelativeTo(null);   
+                TableroPerso.setTitle("Tablero personalizado");
+            }else{
+                Tablero TableroPerso = new Tablero(FichasEnLaCasilla,TableroC[0],TableroC[1],CRetrocede,CAvanza,CTiraDados,CSerpientes,CPierdeTurno,CEscalera);
+                TableroPerso.setVisible(true);
+                TableroPerso.setLocationRelativeTo(null);   
+                TableroPerso.setTitle("Tablero personalizado");
+            }
     }
     public static boolean ConfirmarExistencia(int Caso, ArrayList<Integer> Acomparar,List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados, List<List<Integer>> CSerpientes,List<List<Integer>> CPierdeTurno,List<List<Integer>> CEscalera ){
     if(Caso==1){

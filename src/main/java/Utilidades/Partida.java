@@ -38,7 +38,14 @@ public class Partida {
         Tablero = new Casillas[X][Y];
         LlenarTablero(X,Y, CRetrocede,CAvanza,CTiraDados,CSerpientes,CPierdeTurno,CEscalera);
     }
-    
+    //Constructor si el tablero no tienes escaleras ni serpientes:
+    public Partida(ArrayList<Ficha> FichasEnLaCasilla,int X, int Y, List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados,List<List<Integer>> CPierdeTurno){
+        this.FichasDeJugadores = FichasEnLaCasilla;
+        this.Filas = Y;
+        this.Columnas = X;
+        Tablero = new Casillas[X][Y];
+        LlenarTablero(X,Y, CRetrocede,CAvanza,CTiraDados,CPierdeTurno);
+    }
 
     public Casillas[][] getTablero() {
         return Tablero;
@@ -294,6 +301,76 @@ public class Partida {
                 }      
             }
     }
+    
+    //Si el tablero contiene 0 escaleras y 0 serpientes:
+        public void LlenarTablero(int X, int Y, List<List<Integer>> CRetrocede, List<List<Integer>> CAvanza,List<List<Integer>> CTiraDados,List<List<Integer>> CPierdeTurno){
+        int ContadorCasillas = 1;
+        for (int x = 0; x < X ; x++) {
+            for (int y = 0; y < Y ; y++) {
+                    JPanel M = new javax.swing.JPanel();
+                    JLabel L = new javax.swing.JLabel();  
+                    if(y%2==0){
+                        if(x%2==0){
+                            M.setBackground(Color.cyan);
+                        }else{
+                            M.setBackground(Color.PINK);
+                        }
+                    }else{
+                        if(x%2==0){ 
+                            M.setBackground(Color.PINK);
+                        }else{
+                            M.setBackground(Color.cyan);
+                        }
+                    }
+                    //Asigna los jugadores a la primera casilla:
+                    M.add(L);
+                    for(int i = 0; i < CRetrocede.size(); i++){
+                        for(int p = 0; p < CAvanza.size(); p++){
+                            for(int q = 0; q < CTiraDados.size(); q++){
+                                for(int r = 0; r < CPierdeTurno.size(); r++){
+                        //primera casilla:
+                        try{
+                        if(x==0&&y==0){
+                            Tablero[x][y] = new Casillas(ContadorCasillas,M,L,FichasDeJugadores);
+                        //Para crear casilla de retrocede:
+                        }else if(CRetrocede.get(i).get(0)==x && CRetrocede.get(i).get(1)==y){
+                                JPanel PanelR = new javax.swing.JPanel();
+                                JLabel LabelR = new javax.swing.JLabel(); 
+                                PanelR.setBackground(Color.ORANGE);
+                                Tablero[CRetrocede.get(i).get(0)][CRetrocede.get(i).get(1)]= new CasillaRetrocede(ContadorCasillas,PanelR,LabelR,null,CRetrocede.get(i).get(2));
+                        //Para crear casilla de avanza:
+                        }else if(CAvanza.get(p).get(0)==x && CAvanza.get(p).get(1)==y){
+                            JPanel PanelR = new javax.swing.JPanel();
+                            JLabel LabelR = new javax.swing.JLabel(); 
+                            PanelR.setBackground(Color.GRAY);
+                            Tablero[CAvanza.get(p).get(0)][CAvanza.get(p).get(1)]= new CasillaAvanza(ContadorCasillas,PanelR,LabelR,null,CAvanza.get(p).get(2));
+                        //Para tirar dados
+                        }else if(CTiraDados.get(q).get(0)==x && CTiraDados.get(q).get(1)==y){
+                            JPanel PanelR = new javax.swing.JPanel();
+                            JLabel LabelR = new javax.swing.JLabel(); 
+                            PanelR.setBackground(Color.WHITE);
+                            Tablero[x][y]= new CasillaTirarDados(ContadorCasillas,PanelR,LabelR,null);
+                        //Para perder turno:
+                        }else if(CPierdeTurno.get(r).get(0)==x && CPierdeTurno.get(r).get(1)==y){
+                            JPanel PanelR = new javax.swing.JPanel();
+                            JLabel LabelR = new javax.swing.JLabel(); 
+                            PanelR.setBackground(Color.LIGHT_GRAY);
+                            Tablero[x][y]= new CasillaPerderTurno(ContadorCasillas,PanelR,LabelR,null);
+                        }else if(Tablero[x][y].getNoCasilla()==0||Tablero[x][y].getImagenDeCasilla()==null){
+                            Tablero[x][y] = new Casillas(ContadorCasillas,M,L,null);
+                        }
+                        }catch(NullPointerException e){
+                            Tablero[x][y] = new Casillas(ContadorCasillas,M,L,null);
+                        }                        
+                                }
+                            }
+                        }
+                    }
+                    ContadorCasillas++; 
+                }      
+            }
+    } 
+        
     public void MeterFichaPorNo(Ficha F){
         for (int x = 0; x < Columnas ; x++) {
             for (int y = 0; y < Filas ; y++) {

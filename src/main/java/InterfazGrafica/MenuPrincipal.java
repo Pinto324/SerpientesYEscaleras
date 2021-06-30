@@ -131,6 +131,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         Datos.setVisible(true);
         Datos.setLocationRelativeTo(null);
         Datos.setTitle("Datos de Usuarios");
+        this.setVisible(false);
     }//GEN-LAST:event_BotonMostrarDatosActionPerformed
 
     private void BotonJugarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonJugarPartidaActionPerformed
