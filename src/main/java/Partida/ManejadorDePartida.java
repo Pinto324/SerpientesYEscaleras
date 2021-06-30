@@ -37,32 +37,7 @@ public class ManejadorDePartida {
             Avance = 6;
         } 
     } 
-    public void MostrarSuelo(Partida Partida, JPanel Panel){ 
-        Panel.removeAll();
-        for (int x = 0; x < 10 ; x++) {
-                for (int y = 0; y < 10 ; y++) {
-                    try{
-                        //Ver Las fichas en la casilla:
-                        if(Partida.getTablero()[x][y].getFichasEnLaCasilla().size()<=2){
-                            Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,1));
-                        }else if(Partida.getTablero()[x][y].getFichasEnLaCasilla().size()<=4){
-                            Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,2));
-                        }else{
-                            Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(2,3));
-                        }
-                        if(Partida.getTablero()[x][y].getFichasEnLaCasilla()!=null){
-                            for (int i = 0; i < Partida.getTablero()[x][y].getFichasEnLaCasilla().size() ; i++) {
-                                Partida.getTablero()[x][y].getCasilla().add(Partida.getTablero()[x][y].getFichasEnLaCasilla().get(i).getImagenFicha());
-                            }
-                            }else{
-                                Partida.getTablero()[x][y].getCasilla().setLayout(new GridLayout(1,1));
-                            }
-                        }catch(java.lang.NullPointerException e){
-                    }   
-                    Panel.add(Partida.getTablero()[x][y].getCasilla());
-                }
-        }
-    }  
+
     public int getAvance() {
         return Avance;
     }
