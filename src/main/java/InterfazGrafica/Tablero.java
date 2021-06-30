@@ -29,7 +29,7 @@ public class Tablero extends javax.swing.JFrame {
     public Tablero(ArrayList<Ficha> Fichas) {
         initComponents();
         this.Fichas = Fichas;
-        Partida = new Partida(Fichas,8,8,2,2,2);
+        Partida = new Partida(Fichas,3,3,2,2,2);
         PanelDeTablero.setLayout(new GridLayout(Partida.getColumnas(),Partida.getFilas()));
         ReMostrarSuelo();
     }
@@ -286,7 +286,7 @@ public class Tablero extends javax.swing.JFrame {
     public void EvaluarGanador(){
         if(Fichas.get(Turno).getCasillaActual()>=(Partida.getColumnas()*Partida.getFilas())){
             for (int i = 0; i < ManejoDeUsuarios.getListaUsuarios().size() ; i++) {
-                for (int j = 0; j < ManejoDeUsuarios.getListaUsuarios().size() ; j++) {
+                for (int j = 0; j < Fichas.size() ; j++) {
                     //Asignandole la victoria al ganador
                     if(ManejoDeUsuarios.getListaUsuarios().get(i).getId()==Fichas.get(Turno).getIdDeJugador()){
                         ManejoDeUsuarios.AsignarVictoriaPorID(Fichas.get(Turno).getIdDeJugador());
@@ -298,6 +298,7 @@ public class Tablero extends javax.swing.JFrame {
             }
             JOptionPane.showMessageDialog(null, "Felicidades "+Fichas.get(Turno).getNombreDeJugador()+" has ganado!");
             main.main.Menu.setVisible(true);
+            ManejoDeUsuarios.GrabarUsuarios();
             this.dispose();        
         }
     }

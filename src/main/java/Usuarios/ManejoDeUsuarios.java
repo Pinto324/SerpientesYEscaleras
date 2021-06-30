@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class ManejoDeUsuarios {
     private static ArrayList<Usuarios> ListaUsuarios = new ArrayList<>();
-
+    static boolean llave = true;
     public ManejoDeUsuarios() {
     }
 
@@ -105,6 +105,7 @@ public class ManejoDeUsuarios {
             if(ListaUsuarios.get(i).getNombre().equals(Nombre)){
                 int Partidas =ListaUsuarios.get(i).getPartidasJugadas();
                 ListaUsuarios.get(i).setPartidasJugadas(Partidas+1);
+                llave = true;
             }
         }
     }
@@ -117,11 +118,14 @@ public class ManejoDeUsuarios {
         }
     }
     public static void AsignarVictoriaPorID(int id){
+        if(llave){
         for (int i = 0; i < ListaUsuarios.size(); i++) {
             if(ListaUsuarios.get(i).getId()==id){
                 int Partidas =ListaUsuarios.get(i).getPartidasGanadas();
                 ListaUsuarios.get(i).setPartidasGanadas(Partidas+1);
+                llave = false;
             }
+        }
         }
     }
 }

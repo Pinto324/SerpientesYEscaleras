@@ -213,7 +213,6 @@ public class Partida {
         for (int x = 0; x < 2 ; x++) {
             for (int y = 0; y < 2 ; y++) {
                 if(Objects.equals(Lista1.get(x), Lista3.get(y))&&Objects.equals(Lista2.get(x), Lista4.get(y))&&Objects.equals(Lista1.get(x), Lista4.get(y))&&Objects.equals(Lista2.get(x), Lista3.get(y))){
-                    System.out.println("retorno false");
                     return false;
                 }
             }
